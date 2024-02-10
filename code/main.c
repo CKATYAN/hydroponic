@@ -15,6 +15,7 @@ int main() {
             sleep_ms(300);
         }
         pump_working_within_ms(PUMP_JAR_TO_REACTOR, 1000);
+        sleep_ms(5000); //wait for 
 
         if (is_button_pressed(GARDEN_1_SELECTED)) {
             pump_working_within_ms(PUMP_REACTOR_TO_GARDEN_1, 1000);
