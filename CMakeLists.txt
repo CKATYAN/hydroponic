@@ -8,10 +8,8 @@ pico_sdk_init()
 
 add_executable(hydroponic
     code/main.c
-    code/pump/pump_handler.c
-    code/pump/pump_handler.h
-    code/button/button_handler.c
-    code/button/button_handler.h
+    code/hardware/pump/pump_handler.c
+    code/hardware/button/button_handler.c
 )
 
 target_link_libraries(hydroponic pico_stdlib)

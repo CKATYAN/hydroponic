@@ -1,6 +1,8 @@
 #include "pico/stdlib.h"
-#include "pump/pump_handler.h"
-#include "button/button_handler.h"
+
+#include "hardware/hardware_pinout.h"
+#include "hardware/pump/pump_handler.h"
+#include "hardware/button/button_handler.h"
 
 void initialization() {
     pump_initialization();
@@ -10,21 +12,20 @@ void initialization() {
 int main() {
     initialization();
 
+    bool is_pump_1_working = 0;
+    bool is_pump_2_working = 0;
+    
     while(1) {
-        while (!is_button_pressed(REACTOR_READINESS)) {
-            sleep_ms(300);
+        if (is_button_pressed(INPUT_GARDEN_1_SELECTED)) {
+            is_pump_1_working = !is_pump_1_working;
+            sleep_ms(250);
         }
-        pump_working_within_ms(PUMP_JAR_TO_REACTOR, 1000);
-        sleep_ms(5000); //wait for 
+        if (is_button_pressed(INPUT_GARDEN_2_SELECTED)) {
+            is_pump_2_working = !is_pump_2_working;
+            sleep_ms(250);
+        }
 
-        if (is_button_pressed(GARDEN_1_SELECTED)) {
-            pump_working_within_ms(PUMP_REACTOR_TO_GARDEN_1, 1000);
-        }
-        else if (is_button_pressed(GARDEN_2_SELECTED)) {
-            pump_working_within_ms(PUMP_REACTOR_TO_GARDEN_2, 1000);
-        }
-        else if (is_button_pressed(GARDEN_3_SELECTED)) {
-            pump_working_within_ms(PUMP_REACTOR_TO_GARDEN_3, 1000);
-        }
+        pump_put(OUTPUT_REACTOR_TO_GARDEN_PUMP_1, is_pump_1_working);
+        pump_put(OUTPUT_REACTOR_TO_GARDEN_PUMP_2, is_pump_2_working);
     }
 }
