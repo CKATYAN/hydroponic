@@ -31,21 +31,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  13 .comment      00000049  00000000  00000000  00008328  2**0
                   CONTENTS, READONLY
- 14 .debug_info   000142b1  00000000  00000000  00008371  2**0
+ 14 .debug_info   000142d1  00000000  00000000  00008371  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_abbrev 00003de4  00000000  00000000  0001c622  2**0
+ 15 .debug_abbrev 00003dbe  00000000  00000000  0001c642  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_loc    0000dbe3  00000000  00000000  00020406  2**0
+ 16 .debug_loc    0000dc3e  00000000  00000000  00020400  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_aranges 00000e10  00000000  00000000  0002dff0  2**3
+ 17 .debug_aranges 00000e10  00000000  00000000  0002e040  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_ranges 00002fd0  00000000  00000000  0002ee00  2**3
+ 18 .debug_ranges 00002fd0  00000000  00000000  0002ee50  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_line   0000ecc4  00000000  00000000  00031dd0  2**0
+ 19 .debug_line   0000eccc  00000000  00000000  00031e20  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_str    0000380f  00000000  00000000  00040a94  2**0
+ 20 .debug_str    00003821  00000000  00000000  00040aec  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_frame  0000179c  00000000  00000000  000442a4  2**2
+ 21 .debug_frame  0000179c  00000000  00000000  00044310  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 D:/student_works/~Related_Diploma~/project/test/build/hydroponic.elf:     file format elf32-littlearm
@@ -274,7 +274,7 @@ Disassembly of section .text:
 10000270:	200002f0 	.word	0x200002f0
 10000274:	200006b8 	.word	0x200006b8
 10000278:	10001f41 	.word	0x10001f41
-1000027c:	10000311 	.word	0x10000311
+1000027c:	10000317 	.word	0x10000317
 10000280:	10001efd 	.word	0x10001efd
 10000284:	00005657 	.word	0x00005657
 
@@ -330,72 +330,72 @@ Disassembly of section .text:
 
 10000304 <initialization>:
 10000304:	b510      	push	{r4, lr}
-10000306:	f000 f829 	bl	1000035c <pump_initialization>
-1000030a:	f000 f83c 	bl	10000386 <button_initialization>
-1000030e:	bd10      	pop	{r4, pc}
+10000306:	20c0      	movs	r0, #192	; 0xc0
+10000308:	0040      	lsls	r0, r0, #1
+1000030a:	f000 f83e 	bl	1000038a <button_pin_mask_initialization>
+1000030e:	2003      	movs	r0, #3
+10000310:	f000 f827 	bl	10000362 <pump_pin_mask_initialization>
+10000314:	bd10      	pop	{r4, pc}
 
-10000310 <main>:
-10000310:	b570      	push	{r4, r5, r6, lr}
-10000312:	f7ff fff7 	bl	10000304 <initialization>
-10000316:	2400      	movs	r4, #0
-10000318:	2500      	movs	r5, #0
-1000031a:	e014      	b.n	10000346 <main+0x36>
-1000031c:	2301      	movs	r3, #1
-1000031e:	405d      	eors	r5, r3
-10000320:	b2ed      	uxtb	r5, r5
-10000322:	20fa      	movs	r0, #250	; 0xfa
-10000324:	f001 f868 	bl	100013f8 <sleep_ms>
-10000328:	e012      	b.n	10000350 <main+0x40>
-1000032a:	2301      	movs	r3, #1
-1000032c:	405c      	eors	r4, r3
-1000032e:	b2e4      	uxtb	r4, r4
-10000330:	20fa      	movs	r0, #250	; 0xfa
-10000332:	f001 f861 	bl	100013f8 <sleep_ms>
-10000336:	0029      	movs	r1, r5
-10000338:	2000      	movs	r0, #0
-1000033a:	f000 f818 	bl	1000036e <pump_put>
-1000033e:	0021      	movs	r1, r4
-10000340:	2001      	movs	r0, #1
-10000342:	f000 f814 	bl	1000036e <pump_put>
-10000346:	2007      	movs	r0, #7
-10000348:	f000 f82c 	bl	100003a4 <is_button_pressed>
-1000034c:	2800      	cmp	r0, #0
-1000034e:	d1e5      	bne.n	1000031c <main+0xc>
-10000350:	2008      	movs	r0, #8
-10000352:	f000 f827 	bl	100003a4 <is_button_pressed>
-10000356:	2800      	cmp	r0, #0
-10000358:	d1e7      	bne.n	1000032a <main+0x1a>
-1000035a:	e7ec      	b.n	10000336 <main+0x26>
+10000316 <main>:
+10000316:	b570      	push	{r4, r5, r6, lr}
+10000318:	f7ff fff4 	bl	10000304 <initialization>
+1000031c:	2400      	movs	r4, #0
+1000031e:	2500      	movs	r5, #0
+10000320:	e014      	b.n	1000034c <main+0x36>
+10000322:	2301      	movs	r3, #1
+10000324:	405d      	eors	r5, r3
+10000326:	b2ed      	uxtb	r5, r5
+10000328:	20c8      	movs	r0, #200	; 0xc8
+1000032a:	f001 f865 	bl	100013f8 <sleep_ms>
+1000032e:	e012      	b.n	10000356 <main+0x40>
+10000330:	2301      	movs	r3, #1
+10000332:	405c      	eors	r4, r3
+10000334:	b2e4      	uxtb	r4, r4
+10000336:	20c8      	movs	r0, #200	; 0xc8
+10000338:	f001 f85e 	bl	100013f8 <sleep_ms>
+1000033c:	0029      	movs	r1, r5
+1000033e:	2000      	movs	r0, #0
+10000340:	f000 f817 	bl	10000372 <pump_put>
+10000344:	0021      	movs	r1, r4
+10000346:	2001      	movs	r0, #1
+10000348:	f000 f813 	bl	10000372 <pump_put>
+1000034c:	2007      	movs	r0, #7
+1000034e:	f000 f829 	bl	100003a4 <is_button_pressed>
+10000352:	2800      	cmp	r0, #0
+10000354:	d1e5      	bne.n	10000322 <main+0xc>
+10000356:	2008      	movs	r0, #8
+10000358:	f000 f824 	bl	100003a4 <is_button_pressed>
+1000035c:	2800      	cmp	r0, #0
+1000035e:	d1e7      	bne.n	10000330 <main+0x1a>
+10000360:	e7ec      	b.n	1000033c <main+0x26>
 
-1000035c <pump_initialization>:
-1000035c:	b510      	push	{r4, lr}
-1000035e:	2003      	movs	r0, #3
-10000360:	f000 f865 	bl	1000042e <gpio_init_mask>
-10000364:	23d0      	movs	r3, #208	; 0xd0
-10000366:	061b      	lsls	r3, r3, #24
-10000368:	2203      	movs	r2, #3
-1000036a:	625a      	str	r2, [r3, #36]	; 0x24
-1000036c:	bd10      	pop	{r4, pc}
+10000362 <pump_pin_mask_initialization>:
+10000362:	b510      	push	{r4, lr}
+10000364:	0004      	movs	r4, r0
+10000366:	f000 f862 	bl	1000042e <gpio_init_mask>
+1000036a:	23d0      	movs	r3, #208	; 0xd0
+1000036c:	061b      	lsls	r3, r3, #24
+1000036e:	625c      	str	r4, [r3, #36]	; 0x24
+10000370:	bd10      	pop	{r4, pc}
 
-1000036e <pump_put>:
-1000036e:	2301      	movs	r3, #1
-10000370:	4083      	lsls	r3, r0
-10000372:	2900      	cmp	r1, #0
-10000374:	d003      	beq.n	1000037e <pump_put+0x10>
-10000376:	22d0      	movs	r2, #208	; 0xd0
-10000378:	0612      	lsls	r2, r2, #24
-1000037a:	6153      	str	r3, [r2, #20]
-1000037c:	4770      	bx	lr
-1000037e:	22d0      	movs	r2, #208	; 0xd0
-10000380:	0612      	lsls	r2, r2, #24
-10000382:	6193      	str	r3, [r2, #24]
-10000384:	e7fa      	b.n	1000037c <pump_put+0xe>
+10000372 <pump_put>:
+10000372:	2301      	movs	r3, #1
+10000374:	4083      	lsls	r3, r0
+10000376:	2900      	cmp	r1, #0
+10000378:	d003      	beq.n	10000382 <pump_put+0x10>
+1000037a:	22d0      	movs	r2, #208	; 0xd0
+1000037c:	0612      	lsls	r2, r2, #24
+1000037e:	6153      	str	r3, [r2, #20]
+10000380:	4770      	bx	lr
+10000382:	22d0      	movs	r2, #208	; 0xd0
+10000384:	0612      	lsls	r2, r2, #24
+10000386:	6193      	str	r3, [r2, #24]
+10000388:	e7fa      	b.n	10000380 <pump_put+0xe>
 
-10000386 <button_initialization>:
-10000386:	b510      	push	{r4, lr}
-10000388:	24c0      	movs	r4, #192	; 0xc0
-1000038a:	0064      	lsls	r4, r4, #1
-1000038c:	0020      	movs	r0, r4
+1000038a <button_pin_mask_initialization>:
+1000038a:	b510      	push	{r4, lr}
+1000038c:	0004      	movs	r4, r0
 1000038e:	f000 f84e 	bl	1000042e <gpio_init_mask>
 10000392:	23d0      	movs	r3, #208	; 0xd0
 10000394:	061b      	lsls	r3, r3, #24

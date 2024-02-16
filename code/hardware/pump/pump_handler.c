@@ -1,14 +1,8 @@
 #include "pico/stdlib.h"
 
-#include "../hardware_pinout.h"
 #include "pump_handler.h"
 
-void pump_initialization() {
-    uint pin_mask = (
-        1 << OUTPUT_REACTOR_TO_GARDEN_PUMP_1 |
-        1 << OUTPUT_REACTOR_TO_GARDEN_PUMP_2
-    );
-    
+void pump_pin_mask_initialization(uint pin_mask) {
     gpio_init_mask(pin_mask);
     gpio_set_dir_out_masked(pin_mask);
 }
