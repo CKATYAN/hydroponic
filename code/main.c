@@ -1,7 +1,7 @@
-#include "pico/stdlib.h"
+#include <stdbool.h>
 
-#include "hardware/pump/pump_handler.h"
-#include "hardware/button/button_handler.h"
+#include "pump_handler.h"
+#include "button_handler.h"
 
 // #define INPUT_REACTOR_READINESS 
 #define INPUT_GARDEN_1_SELECTED 7
@@ -13,19 +13,19 @@
 // #define OUTPUT_REACTOR_TO_GARDEN_PUMP_3 2
 // #define OUTPUT_GARDEN_TO_JAR_PUMP
 
-void initialization() {
-    button_pin_mask_initialization(
-        1 << INPUT_GARDEN_1_SELECTED |
-        1 << INPUT_GARDEN_2_SELECTED
+void init() {
+    button_pin_init_mask(
+        INPUT_GARDEN_1_SELECTED, 
+        INPUT_GARDEN_2_SELECTED
     );
-    pump_pin_mask_initialization(
-        1 << OUTPUT_REACTOR_TO_GARDEN_PUMP_1 |
-        1 << OUTPUT_REACTOR_TO_GARDEN_PUMP_2
+    pump_pin_init_mask(
+        OUTPUT_REACTOR_TO_GARDEN_PUMP_1,
+        OUTPUT_REACTOR_TO_GARDEN_PUMP_2
     );
 }
 
 int main() {
-    initialization();
+    init();
         
     bool pump_1_work_state = 0;
     bool pump_2_work_state = 0;
