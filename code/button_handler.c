@@ -4,13 +4,14 @@
 #include "button_handler.h"
 
 void button_pin_init_mask(int input_list, ...) {
-    uint32_t pin_mask;
+    uint32_t pin_mask = 0;
 
     va_list ptr;
     va_start(ptr, input_list);
     for (int i = 0; i < input_list; i++) {
         pin_mask |= 1 << va_arg(ptr, int);
     }
+    va_end(ptr);
 
     gpio_init_mask(pin_mask);
     gpio_set_dir_in_masked(pin_mask);

@@ -1,4 +1,4 @@
-#include <stdbool.h>
+#include "pico/stdlib.h"
 
 #include "pump_handler.h"
 #include "button_handler.h"
@@ -40,7 +40,7 @@ int main() {
             sleep_ms(200);
         }
 
-        pump_put(OUTPUT_REACTOR_TO_GARDEN_PUMP_1, pump_1_work_state);
-        pump_put(OUTPUT_REACTOR_TO_GARDEN_PUMP_2, pump_2_work_state);
+        pump_pin_put(OUTPUT_REACTOR_TO_GARDEN_PUMP_1, pump_1_work_state);
+        pump_pin_put(OUTPUT_REACTOR_TO_GARDEN_PUMP_2, pump_2_work_state);
     }
 }
