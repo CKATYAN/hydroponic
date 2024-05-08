@@ -55,3 +55,5 @@
 3434	3845	7368609970487603	CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj	ad88916e0c4222a7
 3273	3862	7368609970662660	CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj	4f8bafd51e9a79b9
 3862	4436	7368609974151293	hydroponic.elf	8c3393a5ace05ae2
+45	280	7368613950218816	CMakeFiles/hydroponic.dir/code/main.c.obj	19ee98e195a4de3e
+281	841	7368613953608869	hydroponic.elf	8c3393a5ace05ae2
