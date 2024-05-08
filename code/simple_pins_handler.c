@@ -1,9 +1,9 @@
 #include "pico/stdlib.h"
 #include "stdarg.h" // https://www.geeksforgeeks.org/variadic-functions-in-c/
 
-#include "pinout_handler.h"
-
-uint32_t get_mask(int input_list, ...) {
+#include "simple_pins_handler.h"
+ 
+static uint32_t get_mask(int input_list, ...) {
     uint32_t mask = 0;
 
     va_list ptr;
@@ -16,7 +16,7 @@ uint32_t get_mask(int input_list, ...) {
     return mask;
 }
 
-void init_input_pin_list(int input_list, ...) {
+void init_simple_input_pin_list(int input_list, ...) {
     uint32_t pin_mask = get_mask(input_list);
 
     gpio_init_mask(pin_mask);
@@ -24,7 +24,7 @@ void init_input_pin_list(int input_list, ...) {
     gpio_pull_down(pin_mask);
 }
 
-void init_output_pin_list(int input_list, ...) {
+void init_simple_output_pin_list(int input_list, ...) {
     uint32_t pin_mask = get_mask(input_list);
     
     gpio_init_mask(pin_mask);
@@ -35,6 +35,6 @@ bool is_input_pin_pressed(uint button_pin) {
     return gpio_get(button_pin);
 }
 
-void put_output_pin(uint pump_pin, bool value) {
+void put_output_pin_value(uint pump_pin, bool value) {
     gpio_put(pump_pin, value);
 }
