@@ -31,6 +31,7 @@ void init() {
     );
     init_ssd1306(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN);
 }
+d
 
 int main() {
     init();
