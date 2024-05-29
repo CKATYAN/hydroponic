@@ -1,6 +1,5 @@
 #ifndef SSD1306_HANDLER_H_
     #define SSD1306_HANDLER_H_
-    
-    void init_ssd1306(int SDA_pin, int SCL_pin);
-    void send_cmd(uint8_t data[], size_t len);
+
+    void initialize_SSD1306(uint i2c_sda_pin, uint i2c_scl_pin);
 #endif

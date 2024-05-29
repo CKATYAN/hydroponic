@@ -20,25 +20,20 @@
 #define I2C_SDA_PIN 14
 #define I2C_SCL_PIN 15
 
-void init() {
-    // init_simple_input_pin_mask(
+void initialize() {
+    // initialize_simple_input_pin_mask(
     //     1ul << INPUT_REACTOR_READINESS |
     //     1ul << INPUT_GARDEN_1_SELECTED
     // );
-    // init_simple_output_pin_mask(
+    // initialize_simple_output_pin_mask(
     //     1ul << OUTPUT_REACTOR_TO_GARDEN_PUMP_1 |
     //     1ul << OUTPUT_REACTOR_TO_GARDEN_PUMP_2
     // );
-    init_ssd1306(I2C_SDA_PIN, I2C_SCL_PIN);
+    initialize_SSD1306(I2C_SDA_PIN, I2C_SCL_PIN);
 }
 
 int main() {
-    init();
-
-    while(1) {
-        put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_1, 1);
-        put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_2, 1);
-    }
+    initialize();
         
     // bool pump_1_work_state = 0;
     // bool pump_2_work_state = 0;
