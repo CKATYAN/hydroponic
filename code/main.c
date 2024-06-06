@@ -34,7 +34,8 @@ void initialize() {
 
 int main() {
     initialize();
-        
+    write_SDD1306_line("HI!");
+    write_SDD1306_line("HI!");
     // bool pump_1_work_state = 0;
     // bool pump_2_work_state = 0;
 

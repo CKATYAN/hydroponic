@@ -1,9 +1,8 @@
 // libs:
 #include "stdlib.h"
-#include "string.h"
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
-#include "ctype.h"
+#include "string.h"
 // header files:
 #include "ssd1306_handler.h"
 #include "ssd1306_font.h"
@@ -119,124 +118,43 @@ static void configure_display() {
 
 static uint8_t display_memory[SSD1306_MEMORY_SIZE] = {0};
 
-static void clear_display_memory() {
-    memset(display_memory, 0x00, SSD1306_MEMORY_SIZE);
-}
-
 static void render_display() {
-    uint8_t *temp_buf = malloc(SSD1306_MEMORY_SIZE + 1);
-    temp_buf[0] = 0x40;
+    uint8_t transit_array[SSD1306_MEMORY_SIZE + 1];
+    transit_array[0] = 0x40;
 
-    memcpy(temp_buf+1, display_memory, SSD1306_MEMORY_SIZE);
-    i2c_write_blocking(i2c_default, SSD1306_I2C_SLAVE_ADDR, temp_buf, SSD1306_MEMORY_SIZE + 1, false);
-
-    free(temp_buf);
+    memcpy(transit_array+1, display_memory, SSD1306_MEMORY_SIZE);
+    i2c_write_blocking(i2c_default, SSD1306_I2C_SLAVE_ADDR, transit_array, SSD1306_MEMORY_SIZE + 1, false);
 }
 
-static void SetPixel(int x,int y, bool on) {
-    assert(x >= 0 && x < SSD1306_WIDTH && y >=0 && y < SSD1306_HEIGHT);
-
-    // The calculation to determine the correct bit to set depends on which address
-    // mode we are in. This code assumes horizontal
-
-    // The video ram on the SSD1306 is split up in to 8 rows, one bit per pixel.
-    // Each row is 128 long by 8 pixels high, each byte vertically arranged, so byte 0 is x=0, y=0->7,
-    // byte 1 is x = 1, y=0->7 etc
-
-    // This code could be optimised, but is like this for clarity. The compiler
-    // should do a half decent job optimising it anyway.
-
-    const int BytesPerRow = SSD1306_WIDTH ; // x pixels, 1bpp, but each row is 8 pixel high, so (x / 8) * 8
-
-    int byte_idx = (y / 8) * BytesPerRow + x;
-    uint8_t byte = display_memory[byte_idx];
-
-    if (on)
-        byte |=  1 << (y % 8);
+static int get_index_font_symbol(uint8_t character) {
+    if (character > '~' || character < '!')
+        return 0;
     else
-        byte &= ~(1 << (y % 8));
-
-    display_memory[byte_idx] = byte;
+        return (character - 32);
 }
 
-static void DrawLine(int x0, int y0, int x1, int y1, bool on) {
-
-    int dx =  abs(x1-x0);
-    int sx = x0<x1 ? 1 : -1;
-    int dy = -abs(y1-y0);
-    int sy = y0<y1 ? 1 : -1;
-    int err = dx+dy;
-    int e2;
-
-    while (true) {
-        SetPixel(x0, y0, on);
-        if (x0 == x1 && y0 == y1)
-            break;
-        e2 = 2*err;
-
-        if (e2 >= dy) {
-            err += dy;
-            x0 += sx;
-        }
-        if (e2 <= dx) {
-            err += dx;
-            y0 += sy;
-        }
-    }
-}
-
-static inline int GetFontIndex(uint8_t ch) {
-    if (ch >= 'A' && ch <='Z') {
-        return  ch - 'A' + 1;
-    }
-    else if (ch >= '0' && ch <='9') {
-        return  ch - '0' + 27;
-    }
-    else return 0; // Not got that char so space.
-}
-
-static uint8_t reversed[sizeof(font)] = {0};
-
-static uint8_t reverse(uint8_t b) {
-   b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-   b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-   b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-   return b;
-}
-
-static void FillReversedCache() {
-    // calculate and cache a reversed version of fhe font, because I defined it upside down...doh!
-    for (int i=0;i<sizeof(font);i++)
-        reversed[i] = reverse(font[i]);
-}
-
-static void WriteChar(int16_t x, int16_t y, uint8_t ch) {
-    if (reversed[0] == 0) 
-        FillReversedCache();
-
-    if (x > SSD1306_WIDTH - 8 || y > SSD1306_HEIGHT - 8)
-        return;
+static void write_character_display_memory(uint8_t x, uint8_t y, uint8_t character) {
+    if(x > SSD1306_WIDTH - FONT_PIXEL_WIDTH) return;
+    if(y > SSD1306_HEIGHT - SSD1306_PAGE_HEIGHT) return;
 
     // For the moment, only write on Y row boundaries (every 8 vertical pixels)
-    y = y/8;
+    y = (uint8_t)(y / SSD1306_PAGE_HEIGHT);
 
-    ch = toupper(ch);
-    int idx = GetFontIndex(ch);
-    int fb_idx = y * 128 + x;
+    uint8_t index_font_symbol = get_index_font_symbol(character);
+    uint16_t index_pixel_horizontal_mode = y * SSD1306_WIDTH + x;
 
-    for (int i=0;i<8;i++) {
-        display_memory[fb_idx++] = reversed[idx * 8 + i];
+    for (int i = 0; i < FONT_PIXEL_WIDTH; i++) {
+        display_memory[index_pixel_horizontal_mode++] = font[index_font_symbol][i];
     }
 }
 
-static void WriteString(int16_t x, int16_t y, char *str) {
-    // Cull out any string off the screen
-    if (x > SSD1306_WIDTH - 8 || y > SSD1306_HEIGHT - 8)
-        return;
+static void write_string_display_memory(uint8_t x, uint8_t y, char *string_line) {
+    if(x > SSD1306_WIDTH - FONT_PIXEL_WIDTH) return;
+    if(y > SSD1306_HEIGHT - SSD1306_PAGE_HEIGHT) return;
 
-    while (*str) {
-        WriteChar(x, y, *str++);
-        x+=8;
+    while (*string_line) {
+        write_character_display_memory(x, y, *string_line++);
+        x += FONT_PIXEL_WIDTH;
     }
 }
 
@@ -249,8 +167,21 @@ void initialize_SSD1306(uint i2c_sda_pin, uint i2c_scl_pin) {
     gpio_pull_up(i2c_scl_pin);
 
     configure_display();
-    clear_display_memory();
-    
-    WriteString(0, 4, "Hello world!");
     render_display();
+}
+
+void clear_SSD1306_memory() {
+    memset(display_memory, 0x00, SSD1306_MEMORY_SIZE);
+    render_display();
+}
+
+static uint8_t display_y_position = 0;
+
+void write_SDD1306_line(char *string_line) {
+    if (display_y_position == SSD1306_HEIGHT) return;
+
+    write_string_display_memory(0, display_y_position, string_line);
+    render_display();
+
+    display_y_position += SSD1306_PAGE_HEIGHT;
 }
