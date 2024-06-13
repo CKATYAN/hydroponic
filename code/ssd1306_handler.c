@@ -170,18 +170,20 @@ void initialize_SSD1306(uint i2c_sda_pin, uint i2c_scl_pin) {
     render_display();
 }
 
-void clear_SSD1306_memory() {
-    memset(display_memory, 0x00, SSD1306_MEMORY_SIZE);
-    render_display();
-}
-
 static uint8_t display_y_position = 0;
 
 void write_SDD1306_line(char *string_line) {
-    if (display_y_position == SSD1306_HEIGHT) return;
+    if (display_y_position == SSD1306_HEIGHT) display_y_position = 0;
 
     write_string_display_memory(0, display_y_position, string_line);
     render_display();
 
     display_y_position += SSD1306_PAGE_HEIGHT;
+}
+
+void clear_SSD1306_memory() {
+    display_y_position = 0;
+
+    memset(display_memory, 0x00, SSD1306_MEMORY_SIZE);
+    render_display();
 }

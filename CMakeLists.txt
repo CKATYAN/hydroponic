@@ -15,6 +15,7 @@ add_executable(hydroponic
 target_link_libraries(hydroponic 
     pico_stdlib
     hardware_i2c
+    hardware_rtc
 )
 
 pico_add_extra_outputs(hydroponic)
