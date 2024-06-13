@@ -23,7 +23,7 @@
 #define I2C_SCL_PIN 15
 
 // other:
-#define PERIOD 20
+#define PERIOD_SEC 20
 
 void show_pumps_info();
 void control_pumps();
@@ -55,7 +55,7 @@ void initialize() {
     };
     rtc_init();
     rtc_set_datetime(&t);
-    sleep_ms(64);
+    sleep_ms(64); // wait for updating new datetime
 }
 
 int main() {
@@ -78,13 +78,13 @@ void show_pumps_info(datetime_t t) {
 
     for(int i = 1; i <= 3; i++) {
         if(i == pump_number) {
-            sprintf(buffer, "pump %d: on for %d sec", i, (60 + (i * PERIOD - t.sec)) % 60);
+            sprintf(buffer, "pump %d: on for %d sec", i, (60 + (i * PERIOD_SEC - t.sec)) % 60);
         } else {
-            sprintf(buffer, "pump %d: off for %d sec", i, (60 + (i * (PERIOD - 1) - t.sec)) % 60);
+            sprintf(buffer, "pump %d: off for %d sec", i, (60 + (i * (PERIOD_SEC - 1) - t.sec)) % 60);
         }
         write_SDD1306_line(buffer);
     }
-    if(!(t.sec % PERIOD)) {
+    if(!(t.sec % PERIOD_SEC)) {
         pump_number %= 3;
         pump_number++;
     }

@@ -1235,9 +1235,9 @@ Discarded input sections
                 0x00000000        0x1 CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_rtc/rtc.c.obj
  .bss._callback
                 0x00000000        0x4 CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_rtc/rtc.c.obj
- .text          0x00000000        0x0 C:\Users\ctrai\AppData\Local\Temp\ccOGE5yP.o
- .data          0x00000000        0x0 C:\Users\ctrai\AppData\Local\Temp\ccOGE5yP.o
- .bss           0x00000000        0x0 C:\Users\ctrai\AppData\Local\Temp\ccOGE5yP.o
+ .text          0x00000000        0x0 C:\Users\ctrai\AppData\Local\Temp\ccu7cTND.o
+ .data          0x00000000        0x0 C:\Users\ctrai\AppData\Local\Temp\ccu7cTND.o
+ .bss           0x00000000        0x0 C:\Users\ctrai\AppData\Local\Temp\ccu7cTND.o
  .data          0x00000000        0x0 c:/progra~1/raspbe~1/picosd~1.1/gcc-ar~1/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .bss           0x00000000        0x0 c:/progra~1/raspbe~1/picosd~1.1/gcc-ar~1/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .text          0x00000000        0x0 c:/progra~1/raspbe~1/picosd~1.1/gcc-ar~1/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libg.a(lib_a-calloc.o)
@@ -1453,7 +1453,7 @@ LOAD c:/progra~1/raspbe~1/picosd~1.1/gcc-ar~1/bin/../lib/gcc/arm-none-eabi/10.3.
 .boot2          0x10000000      0x100
                 0x10000000                __boot2_start__ = .
  *(.boot2)
- .boot2         0x10000000      0x100 C:\Users\ctrai\AppData\Local\Temp\ccOGE5yP.o
+ .boot2         0x10000000      0x100 C:\Users\ctrai\AppData\Local\Temp\ccu7cTND.o
                 0x10000100                __boot2_end__ = .
                 0x00000001                ASSERT (((__boot2_end__ - __boot2_start__) == 0x100), ERROR: Pico second stage bootloader must be 256 bytes in size)
 
@@ -2463,7 +2463,7 @@ LOAD CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pic
 LOAD CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
 LOAD CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj
 LOAD CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_rtc/rtc.c.obj
-LOAD C:\Users\ctrai\AppData\Local\Temp\ccOGE5yP.o
+LOAD C:\Users\ctrai\AppData\Local\Temp\ccu7cTND.o
 LOAD c:/progra~1/raspbe~1/picosd~1.1/gcc-ar~1/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libstdc++.a
 LOAD c:/progra~1/raspbe~1/picosd~1.1/gcc-ar~1/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libm.a
 START GROUP
@@ -2560,7 +2560,7 @@ LOAD linker stubs
  .ARM.attributes
                 0x000005ea       0x2c CMakeFiles/hydroponic.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_rtc/rtc.c.obj
  .ARM.attributes
-                0x00000616       0x22 C:\Users\ctrai\AppData\Local\Temp\ccOGE5yP.o
+                0x00000616       0x22 C:\Users\ctrai\AppData\Local\Temp\ccu7cTND.o
  .ARM.attributes
                 0x00000638       0x1e c:/progra~1/raspbe~1/picosd~1.1/gcc-ar~1/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .ARM.attributes
