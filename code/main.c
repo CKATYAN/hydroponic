@@ -13,10 +13,10 @@
 // #define INPUT_GARDEN_3_SELECTED 29
 
 // simple devices:
+
 #define OUTPUT_REACTOR_TO_GARDEN_PUMP_1 0
 #define OUTPUT_REACTOR_TO_GARDEN_PUMP_2 1
 #define OUTPUT_REACTOR_TO_GARDEN_PUMP_3 2
-#define OUTPUT_GARDEN_TO_JAR_PUMP 3
 
 // ssd1306:
 #define I2C_SDA_PIN 14
@@ -25,8 +25,7 @@
 // other:
 #define PERIOD_SEC 20
 
-void show_pumps_info();
-void control_pumps();
+void control_pumps(uint8_t pump_number);
 
 void initialize() {
     // initialize_simple_input_pin_mask(
@@ -42,7 +41,7 @@ void initialize() {
     
     // gpio_set_irq_enabled_with_callback(INPUT_REACTOR_READINESS, GPIO_IRQ_EDGE_RISE, 1, &callback);
     // gpio_set_irq_enabled_with_callback(INPUT_GARDEN_1_SELECTED, GPIO_IRQ_EDGE_RISE, 1, &callback);
-    initialize_SSD1306(I2C_SDA_PIN, I2C_SCL_PIN);
+    SSD1306_initialize(I2C_SDA_PIN, I2C_SCL_PIN);
 
     datetime_t t = {
         .year  = 2024,
@@ -60,44 +59,41 @@ void initialize() {
 
 int main() {
     initialize();
-    
-    datetime_t t = {0};
+
+    datetime_t t;
+    char buffer[128];
+    uint8_t pump_number = 1;
+
     while(true) {
+        SSD1306_clear_memory();
+
         rtc_get_datetime(&t);
-        show_pumps_info(t);
-        control_pumps(t);
+        for(int i = 1; i <= 3; i++) {
+            if(i == pump_number) {
+                sprintf(buffer, "pump %d: on for %d sec", i, (60 + (i * PERIOD_SEC - t.sec)) % 60);
+            } else {
+                sprintf(buffer, "pump %d: off for %d sec", i, (60 + ((i-1) * PERIOD_SEC - t.sec)) % 60);
+            }
+            SDD1306_write_line(buffer);
+        }
+        control_pumps(pump_number);
+
+        if(!(t.sec % PERIOD_SEC)) {
+            pump_number %= 3;
+            pump_number++;
+        }
         sleep_ms(1000);
     }
 }
 
-void show_pumps_info(datetime_t t) {
-    clear_SSD1306_memory();
-
-    char buffer[128];
-    uint8_t pump_number = 1;
-
-    for(int i = 1; i <= 3; i++) {
-        if(i == pump_number) {
-            sprintf(buffer, "pump %d: on for %d sec", i, (60 + (i * PERIOD_SEC - t.sec)) % 60);
-        } else {
-            sprintf(buffer, "pump %d: off for %d sec", i, (60 + (i * (PERIOD_SEC - 1) - t.sec)) % 60);
-        }
-        write_SDD1306_line(buffer);
-    }
-    if(!(t.sec % PERIOD_SEC)) {
-        pump_number %= 3;
-        pump_number++;
-    }
-}
-
-void control_pumps(datetime_t t) {
-    if(t.sec < 20) {
+void control_pumps(uint8_t pump_number) {
+    if(pump_number == 1) {
         put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_3, 0);
         put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_1, 1);
-    } else if (t.sec < 40) {
+    } else if (pump_number == 2) {
         put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_1, 0);
         put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_2, 1);
-    } else if (t.sec < 60) {
+    } else if (pump_number == 3) {
         put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_2, 0);
         put_output_pin_value(OUTPUT_REACTOR_TO_GARDEN_PUMP_3, 1);
     }

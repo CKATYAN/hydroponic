@@ -158,7 +158,7 @@ static void write_string_display_memory(uint8_t x, uint8_t y, char *string_line)
     }
 }
 
-void initialize_SSD1306(uint i2c_sda_pin, uint i2c_scl_pin) {
+void SSD1306_initialize(uint i2c_sda_pin, uint i2c_scl_pin) {
     i2c_init(i2c_default, SSD1306_I2C_CLK * 1000);
 
     gpio_set_function(i2c_sda_pin, GPIO_FUNC_I2C);
@@ -172,7 +172,7 @@ void initialize_SSD1306(uint i2c_sda_pin, uint i2c_scl_pin) {
 
 static uint8_t display_y_position = 0;
 
-void write_SDD1306_line(char *string_line) {
+void SDD1306_write_line(char *string_line) {
     if (display_y_position == SSD1306_HEIGHT) display_y_position = 0;
 
     write_string_display_memory(0, display_y_position, string_line);
@@ -181,7 +181,7 @@ void write_SDD1306_line(char *string_line) {
     display_y_position += SSD1306_PAGE_HEIGHT;
 }
 
-void clear_SSD1306_memory() {
+void SSD1306_clear_memory() {
     display_y_position = 0;
 
     memset(display_memory, 0x00, SSD1306_MEMORY_SIZE);
